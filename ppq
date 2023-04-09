@@ -1,0 +1,194 @@
+     ORG 0000H
+     LJMP MAIN
+     ORG 001BH
+     LJMP YS2M
+
+MAIN:MOV TMOD,#00010000B
+     MOV TH1,#0F8H
+     MOV TL1,#30H
+     SETB EA
+     SETB ET1
+     SETB TR1
+     MOV R0,#40H
+     MOV R1,#0
+     MOV R2,#0
+     MOV R3,#0
+     MOV R4,#0
+     MOV R5,#0
+     MOV R6,#1
+     MOV R7,#0
+     MOV P2,#00000000B
+     MOV P0,#00000000B
+
+     MOV 40h,#0
+     MOV 41h,#0
+     MOV 42h,#0
+     MOV 43h,#0
+     MOV 44h,#0
+     MOV 45h,#0
+     MOV 47H,#00100000B
+N1: JB  P3.6,$
+    JNB P3.6,$
+   
+
+N2: JB  P3.5,N3
+    JNB P3.5,$
+    LCALL AA
+   CJNE r1,#1,K7 
+   CJNE r3,#1,K7
+   MOV 20H,R2
+   
+   INC 20H
+   INC 20H
+   MOV A,R7
+   CJNE A,20H,K8
+   LCALL K5 
+K8:MOV 21H,R7
+  
+   INC 21H
+   INC 21H
+    MOV A,R2
+   CJNE A,21H,N2
+   LCALL K6   
+K7:CJNE r1,#1,K1
+   CJNE R7,#1,K1
+K5: INC R4
+   MOV R7,#0
+   MOV R1,#0
+   MOV R2,#0
+   MOV R3,#0
+
+K1:CJNE r3,#1,K2
+   CJNE R2,#1,K2
+K6:INC R5
+   MOV R7,#0
+   MOV R1,#0
+   MOV R2,#0
+   MOV R3,#0
+   
+K2:CJNE r4,#4,K3
+   MOV R7,#0
+   MOV R1,#0
+   MOV R2,#0FFh
+   MOV R3,#0FFh
+   LJMP N11
+K3:CJNE R5,#4,N3
+   MOV R7,#0FFh
+   MOV R1,#0FFh
+   MOV R2,#0
+   MOV R3,#0
+   LJMP N11
+N11: JB  P3.5,$
+     JNB P3.5,$
+     LCALL AA
+     MOV R7,#0    ;G
+     MOV R1,#0    ;S
+     MOV R2,#0    ;G
+     MOV R3,#0    ;S
+     MOV R4,#0
+     MOV R5,#0
+     MOV R6,#1
+
+
+     LJMP N1
+;-------------------------------------------
+N3: JB  P3.0,N4
+    JNB P3.0,$
+    LCALL AA
+    CJNE R6,#1,N33
+    MOV P0,#00000001B
+    INC R6
+    LJMP N4
+N33:MOV P0,#00000010B
+    MOV R6,#1
+
+
+;--------------------------------------------
+N4: JB  P3.2,N5
+    JNB P3.2,$
+    LCALL AA
+    INC R7
+    CJNE R7,#10,N55
+    MOV  R7,#00H
+    INC  R1
+N55:CJNE R1,#9,N5
+    CJNE R7,#9,N5
+    MOV R1,#0
+    MOV R7,#0
+
+
+
+N5: JB  P3.1,N6
+    JNB P3.1,$
+    LCALL AA
+    DEC R7
+    CJNE R7,#-1,N6
+    CJNE R1,#0,N44
+    MOV R7,#0
+    MOV R1,#0
+    LJMP N6
+N44:MOV  R7,#9
+    DEC  R1
+    CJNE R1,#-1,N6
+    MOV R1,#1
+
+;---------------------------------------
+N6: JB  P3.4,N7
+    JNB P3.4,$
+    LCALL AA
+    INC R2
+    CJNE R2,#10,N66
+    MOV  R2,#00H
+    INC  R3
+N66:CJNE R3,#9,N7
+    CJNE R2,#9,N7
+    MOV R2,#00H
+    MOV R3,#00H
+
+
+N7: JB  P3.3,N8
+    JNB P3.3,$
+    LCALL AA
+    DEC R2
+    CJNE R2,#-1,N8
+    CJNE R3,#0,N77
+    MOV R2,#0
+    MOV R3,#0
+    LJMP N2
+N77:MOV  R2,#9
+    DEC  R3
+    CJNE R3,#-1,N7
+    MOV R3,#1
+N8: LJMP N2
+
+AA: MOV 50H,#5
+ABC1:MOV 51H,#3
+ABC2:MOV 52H,#200
+     DJNZ 52H,$
+     DJNZ 51H,ABC2
+     DJNZ 50H,ABC1
+     RET
+
+
+;--------------------------------
+YS2M:MOV TH1,#0F8H
+     MOV TL1,#30H
+     MOV 40h,R7
+     MOV 41h,R1
+     MOV 42h,R4
+     MOV 43h,R5
+     MOV 44h,R2
+     MOV 45h,R3
+     MOV P1,#00000000B
+     MOV A,@R0
+     MOV P2,A
+     MOV P1,47H
+     INC R0
+     MOV A,47H
+     RR A
+     MOV 47H,A
+     CJNE R0,#46H,YS6
+     MOV 47H,#00100000B
+     MOV R0,#40H
+
+YS6: RETI
