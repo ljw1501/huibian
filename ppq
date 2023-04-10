@@ -3,6 +3,8 @@
      ORG 001BH
      LJMP YS2M
 
+
+
 MAIN:MOV TMOD,#00010000B
      MOV TH1,#0F8H
      MOV TL1,#30H
@@ -37,6 +39,8 @@ N2: JB  P3.5,N3
    CJNE r1,#1,K7 
    CJNE r3,#1,K7
    MOV 20H,R2
+   
+   
    
    INC 20H
    INC 20H
