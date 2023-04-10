@@ -145,7 +145,7 @@ N66:CJNE R3,#9,N7
     MOV R2,#00H
     MOV R3,#00H
 
-
+---....................
 N7: JB  P3.3,N8
     JNB P3.3,$
     LCALL AA
@@ -161,6 +161,8 @@ N77:MOV  R2,#9
     MOV R3,#1
 N8: LJMP N2
 
+
+
 AA: MOV 50H,#5
 ABC1:MOV 51H,#3
 ABC2:MOV 52H,#200
@@ -168,6 +170,8 @@ ABC2:MOV 52H,#200
      DJNZ 51H,ABC2
      DJNZ 50H,ABC1
      RET
+
+
 
 
 ;--------------------------------
